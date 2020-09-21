@@ -5,22 +5,7 @@ namespace TroykaCap.Expander.Extensions
 {
     internal static class I2CDeviceExtension
     {
-        internal static ushort SafeReadAddressWord(this II2CDevice device, int address)
-        {
-            if (device is null)
-            {
-                return default;
-            }
-
-            try
-            {
-                return device.ReadAddressWord(address);
-            }
-            catch (HardwareException)
-            {
-                return default;
-            }
-        }
+        private const int IgnoreErrorCode = 0x79;
 
         internal static bool SafeWrite(this II2CDevice device, byte data)
         {
@@ -35,9 +20,26 @@ namespace TroykaCap.Expander.Extensions
 
                 return true;
             }
+            catch (HardwareException exception)
+            {
+                return exception.ErrorCode == IgnoreErrorCode;
+            }
+        }
+
+        internal static ushort SafeReadAddressWord(this II2CDevice device, int address)
+        {
+            if (device is null)
+            {
+                return default;
+            }
+
+            try
+            {
+                return device.ReadAddressWord(address);
+            }
             catch (HardwareException)
             {
-                return false;
+                return default;
             }
         }
 

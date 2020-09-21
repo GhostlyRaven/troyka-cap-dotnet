@@ -28,11 +28,11 @@
 
         #region Shield settings
 
-        void ChangeAddress(ushort newAddress);
+        bool ChangeAddress(ushort newAddress);
 
-        void SaveAddress();
+        bool SaveAddress();
 
-        void Reset();
+        bool Reset();
 
         #endregion
     }

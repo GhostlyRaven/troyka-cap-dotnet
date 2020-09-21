@@ -35,8 +35,8 @@ namespace TroykaCap.Example4
 
                         if (ushort.TryParse(Console.ReadLine(), out ushort address))
                         {
-                            Expander.ChangeAddress(address);
-                            Expander.SaveAddress();
+                            Console.WriteLine($"Change address: {Expander.ChangeAddress(address)}");
+                            Console.WriteLine($"Save address: {Expander.SaveAddress()}");
                         }
                         else
                         {
@@ -47,8 +47,7 @@ namespace TroykaCap.Example4
                     }
                 case "2":
                     {
-                        Console.WriteLine("Reset address");
-                        Expander.Reset();
+                        Console.WriteLine($"Reset address: {Expander.Reset()}");
                         break;
                     }
                 default:

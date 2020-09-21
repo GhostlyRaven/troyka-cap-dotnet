@@ -21,6 +21,9 @@ namespace TroykaCap.Expander
         private const int GpioExpanderAnalogRead = 0x0C;
         private const int GpioExpanderPwmFreq = 0x0D;
 
+        private const int AnalogWriteMultiplier = 255;
+        private const double AnalogReadDivisor = 4095.0;
+
         #endregion
 
         private readonly II2CDevice _gpioExpander;
@@ -102,7 +105,7 @@ namespace TroykaCap.Expander
 
         public void AnalogWrite(ushort pin, double value)
         {
-            ushort data = (ushort)(value * 255);
+            ushort data = (ushort)(value * AnalogWriteMultiplier);
 
             data = (ushort)((pin & 0xff) | ((data & 0xff) << 8));
 
@@ -111,7 +114,7 @@ namespace TroykaCap.Expander
 
         public double AnalogRead(ushort pin)
         {
-            return AnalogRead16(pin) / 4095.0;
+            return AnalogRead16(pin) / AnalogReadDivisor;
         }
 
         public void PwmFreq(ushort freq)
@@ -123,19 +126,19 @@ namespace TroykaCap.Expander
 
         #region Shield settings
 
-        public void ChangeAddress(ushort newAddress)
+        public bool ChangeAddress(ushort newAddress)
         {
-            _gpioExpander.SafeWriteAddressWord(GpioExpanderChangeI2CAddress, newAddress);
+            return _gpioExpander.SafeWriteAddressWord(GpioExpanderChangeI2CAddress, newAddress);
         }
 
-        public void SaveAddress()
+        public bool SaveAddress()
         {
-            _gpioExpander.SafeWrite(GpioExpanderSaveI2CAddress);
+            return _gpioExpander.SafeWrite(GpioExpanderSaveI2CAddress);
         }
 
-        public void Reset()
+        public bool Reset()
         {
-            _gpioExpander.SafeWrite(GpioExpanderReset);
+            return _gpioExpander.SafeWrite(GpioExpanderReset);
         }
 
         #endregion
