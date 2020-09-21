@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30503.244
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TroykaCap.Example1", "TroykaCap.Example1\TroykaCap.Example1.csproj", "{43958B9E-E530-45BC-BAEA-00AA7B18814A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TroykaCap.Example2", "TroykaCap.Example2\TroykaCap.Example2.csproj", "{E050FC8F-321B-49A8-8007-5E709C36BAF9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TroykaCap.Example3", "TroykaCap.Example3\TroykaCap.Example3.csproj", "{774AFDA8-9976-40F0-BA75-3D8BAFBF3634}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TroykaCap.Example4", "TroykaCap.Example4\TroykaCap.Example4.csproj", "{C8621F56-0687-4737-BB48-0BD52AE24622}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TroykaCap.Example5", "TroykaCap.Example5\TroykaCap.Example5.csproj", "{82889177-62CD-4757-947C-0904D88D9A99}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{43958B9E-E530-45BC-BAEA-00AA7B18814A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43958B9E-E530-45BC-BAEA-00AA7B18814A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43958B9E-E530-45BC-BAEA-00AA7B18814A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43958B9E-E530-45BC-BAEA-00AA7B18814A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E050FC8F-321B-49A8-8007-5E709C36BAF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E050FC8F-321B-49A8-8007-5E709C36BAF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E050FC8F-321B-49A8-8007-5E709C36BAF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E050FC8F-321B-49A8-8007-5E709C36BAF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{774AFDA8-9976-40F0-BA75-3D8BAFBF3634}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{774AFDA8-9976-40F0-BA75-3D8BAFBF3634}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{774AFDA8-9976-40F0-BA75-3D8BAFBF3634}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{774AFDA8-9976-40F0-BA75-3D8BAFBF3634}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8621F56-0687-4737-BB48-0BD52AE24622}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8621F56-0687-4737-BB48-0BD52AE24622}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8621F56-0687-4737-BB48-0BD52AE24622}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8621F56-0687-4737-BB48-0BD52AE24622}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82889177-62CD-4757-947C-0904D88D9A99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82889177-62CD-4757-947C-0904D88D9A99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82889177-62CD-4757-947C-0904D88D9A99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82889177-62CD-4757-947C-0904D88D9A99}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {61FE2F88-4975-4603-A2CC-6DE66C15356D}
+	EndGlobalSection
+EndGlobal
