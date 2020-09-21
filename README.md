@@ -1,2 +1,5 @@
 # troyka-cap-dotnet
-Implementation of the library for Troyka Cap from Amperka on the dotnet platform.
+# Russian
+Реализация библиотеки для TroykaCap от Amperka на платформе dotnet.
+# English
+Implementation of the library for TroykaCap from Amperka on the dotnet platform.
