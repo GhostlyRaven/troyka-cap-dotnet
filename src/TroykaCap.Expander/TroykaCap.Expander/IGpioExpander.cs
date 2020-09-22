@@ -6,11 +6,11 @@
 
         ushort DigitalReadPort();
 
-        void DigitalWritePort(ushort value);
+        bool DigitalWritePort(ushort value);
 
-        void PinMode(ushort pin, PinMode mode);
+        bool PinMode(ushort pin, PinMode mode);
 
-        void DigitalWrite(ushort pin, bool value);
+        bool DigitalWrite(ushort pin, bool value);
 
         bool DigitalRead(ushort pin);
 
@@ -18,11 +18,11 @@
 
         #region Analog functions
 
-        void AnalogWrite(ushort pin, double value);
+        bool AnalogWrite(ushort pin, double value);
 
         double AnalogRead(ushort pin);
 
-        void PwmFreq(ushort freq);
+        bool PwmFreq(ushort freq);
 
         #endregion
 

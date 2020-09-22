@@ -16,6 +16,7 @@ namespace TroykaCap.Example3
             Pi.Init<BootstrapWiringPi>();
 
             Expander = Pi.I2C.CreateGpioExpander();
+            //Expander = Pi.I2C.SafeCreateGpioExpander();
         }
 
         public static void Main()
@@ -25,8 +26,6 @@ namespace TroykaCap.Example3
             Console.WriteLine($"Port: {Expander.DigitalReadPort()}");
 
             Expander.DigitalWritePort(255);
-
-            Console.WriteLine($"Port: {Expander.DigitalReadPort()}");
 
             Task.Delay(60000).Wait();
 

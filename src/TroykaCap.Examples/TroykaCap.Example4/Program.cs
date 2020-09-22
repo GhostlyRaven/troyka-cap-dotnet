@@ -8,13 +8,11 @@ namespace TroykaCap.Example4
 {
     public static class Program
     {
-        private static readonly IGpioExpander Expander;
+        private static IGpioExpander Expander;
 
         static Program()
         {
             Pi.Init<BootstrapWiringPi>();
-
-            Expander = Pi.I2C.CreateGpioExpander();
         }
 
         public static void Main()
@@ -31,6 +29,9 @@ namespace TroykaCap.Example4
             {
                 case "1":
                     {
+                        Expander = Pi.I2C.CreateGpioExpander();
+                        //Expander = Pi.I2C.SafeCreateGpioExpander();
+
                         Console.WriteLine("Enter a new address:");
 
                         if (ushort.TryParse(Console.ReadLine(), out ushort address))
@@ -47,7 +48,20 @@ namespace TroykaCap.Example4
                     }
                 case "2":
                     {
-                        Console.WriteLine($"Reset address: {Expander.Reset()}");
+                        Console.WriteLine("Enter a current address:");
+
+                        if (ushort.TryParse(Console.ReadLine(), out ushort address))
+                        {
+                            Expander = Pi.I2C.CreateGpioExpander(address);
+                            //Expander = Pi.I2C.SafeCreateGpioExpander(address);
+
+                            Console.WriteLine($"Reset address: {Expander.Reset()}");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid address value.");
+                        }
+
                         break;
                     }
                 default:

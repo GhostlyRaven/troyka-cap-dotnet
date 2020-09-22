@@ -18,6 +18,7 @@ namespace TroykaCap.Example2
             Pi.Init<BootstrapWiringPi>();
 
             Expander = Pi.I2C.CreateGpioExpander();
+            //Expander = Pi.I2C.SafeCreateGpioExpander();
         }
 
         public static void Main()
@@ -31,7 +32,7 @@ namespace TroykaCap.Example2
             {
                 bool result = Expander.DigitalRead(Pin1);
 
-                Expander.DigitalWrite(Pin2, result);
+                Expander.DigitalWrite(Pin2, !result);
             }
 
             Console.WriteLine("Stop");

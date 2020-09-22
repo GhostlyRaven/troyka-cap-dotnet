@@ -40,76 +40,55 @@ namespace TroykaCap.Expander
             return ReverseUInt16(_gpioExpander.SafeReadAddressWord(GpioExpanderDigitalRead));
         }
 
-        public void DigitalWritePort(ushort value)
+        public bool DigitalWritePort(ushort value)
         {
             ushort data = ReverseUInt16(value);
 
-            _gpioExpander.SafeWriteAddressWord(GpioExpanderDigitalWriteHigh, data);
-
-            _gpioExpander.SafeWriteAddressWord(GpioExpanderDigitalWriteLow, (ushort)~data);
+            return _gpioExpander.SafeWriteAddressWord(GpioExpanderDigitalWriteHigh, data) &&
+                   _gpioExpander.SafeWriteAddressWord(GpioExpanderDigitalWriteLow, (ushort)~data);
         }
 
-        public void PinMode(ushort pin, PinMode mode)
+        public bool PinMode(ushort pin, PinMode mode)
         {
             ushort data = Mask(pin);
 
             data = ReverseUInt16(data);
 
-            switch (mode)
+            return mode switch
             {
-                case Expander.PinMode.Input:
-                    {
-                        _gpioExpander.SafeWriteAddressWord(GpioExpanderPortModeInput, data);
-                        break;
-                    }
-                case Expander.PinMode.InputPullUp:
-                    {
-                        _gpioExpander.SafeWriteAddressWord(GpioExpanderPortModePullUp, data);
-                        break;
-                    }
-                case Expander.PinMode.InputPullDown:
-                    {
-                        _gpioExpander.SafeWriteAddressWord(GpioExpanderPortModePullDown, data);
-                        break;
-                    }
-                case Expander.PinMode.Output:
-                    {
-                        _gpioExpander.SafeWriteAddressWord(GpioExpanderPortModeOutput, data);
-                        break;
-                    }
-            }
+                Expander.PinMode.Input => _gpioExpander.SafeWriteAddressWord(GpioExpanderPortModeInput, data),
+                Expander.PinMode.InputPullUp => _gpioExpander.SafeWriteAddressWord(GpioExpanderPortModePullUp, data),
+                Expander.PinMode.InputPullDown => _gpioExpander.SafeWriteAddressWord(GpioExpanderPortModePullDown, data),
+                Expander.PinMode.Output => _gpioExpander.SafeWriteAddressWord(GpioExpanderPortModeOutput, data),
+                _ => false
+            };
         }
 
-        public void DigitalWrite(ushort pin, bool value)
+        public bool DigitalWrite(ushort pin, bool value)
         {
             ushort data = Mask(pin);
 
             data = ReverseUInt16(data);
 
-            _gpioExpander.SafeWriteAddressWord(value ? GpioExpanderDigitalWriteHigh : GpioExpanderDigitalWriteLow, data);
+            return _gpioExpander.SafeWriteAddressWord(value ? GpioExpanderDigitalWriteHigh : GpioExpanderDigitalWriteLow, data);
         }
 
         public bool DigitalRead(ushort pin)
         {
-            if ((DigitalReadPort() & Mask(pin)) == 0)
-            {
-                return true;
-            }
-
-            return false;
+            return (DigitalReadPort() & Mask(pin)) > 0;
         }
 
         #endregion
 
         #region Analog functions
 
-        public void AnalogWrite(ushort pin, double value)
+        public bool AnalogWrite(ushort pin, double value)
         {
             ushort data = (ushort)(value * AnalogWriteMultiplier);
 
             data = (ushort)((pin & 0xff) | ((data & 0xff) << 8));
 
-            _gpioExpander.SafeWriteAddressWord(GpioExpanderAnalogWrite, data);
+            return _gpioExpander.SafeWriteAddressWord(GpioExpanderAnalogWrite, data);
         }
 
         public double AnalogRead(ushort pin)
@@ -117,9 +96,9 @@ namespace TroykaCap.Expander
             return AnalogRead16(pin) / AnalogReadDivisor;
         }
 
-        public void PwmFreq(ushort freq)
+        public bool PwmFreq(ushort freq)
         {
-            _gpioExpander.SafeWriteAddressWord(GpioExpanderPwmFreq, ReverseUInt16(freq));
+            return _gpioExpander.SafeWriteAddressWord(GpioExpanderPwmFreq, ReverseUInt16(freq));
         }
 
         #endregion

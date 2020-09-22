@@ -18,6 +18,7 @@ namespace TroykaCap.Example1
             Pi.Init<BootstrapWiringPi>();
 
             Expander = Pi.I2C.CreateGpioExpander();
+            //Expander = Pi.I2C.SafeCreateGpioExpander();
         }
 
         public static void Main()

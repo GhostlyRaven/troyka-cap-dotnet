@@ -2,18 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>1.2.0</Version>
+    <Version>1.2.1</Version>
     <Authors>GhostlyRaven</Authors>
     <Company />
     <Product />
     <Description>Implementation of the library for Troyka Cap from Amperka on the dotnet platform.</Description>
-    <PackageProjectUrl>https://amperka.ru/product/raspberry-troyka-cap</PackageProjectUrl>
+    <PackageProjectUrl>https://amperka.com/products/raspberry-troyka-cap</PackageProjectUrl>
     <RepositoryUrl>https://github.com/GhostlyRaven/troyka-cap-dotnet</RepositoryUrl>
     <PackageIcon>Amperka.png</PackageIcon>
     <PackageTags>Amperka RaspberryPi TroykaCap IoT</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <AssemblyVersion>1.2.0.0</AssemblyVersion>
-    <FileVersion>1.2.0.0</FileVersion>
+    <AssemblyVersion>1.2.1.0</AssemblyVersion>
+    <FileVersion>1.2.1.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

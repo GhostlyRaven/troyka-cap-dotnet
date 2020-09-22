@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Unosquare.RaspberryIO.Abstractions;
 
 namespace TroykaCap.Expander.Extensions
@@ -20,6 +21,28 @@ namespace TroykaCap.Expander.Extensions
             }
 
             return new InternalGpioExpander(bus.AddDevice(expanderAddress));
+        }
+
+        public static IGpioExpander SafeCreateGpioExpander(this II2CBus bus, int expanderAddress = GpioExpanderDefaultI2CAddress)
+        {
+            if (bus is null)
+            {
+                return default;
+            }
+
+            if (expanderAddress < 0 || expanderAddress > 127)
+            {
+                return default;
+            }
+
+            try
+            {
+                return new InternalGpioExpander(bus.AddDevice(expanderAddress));
+            }
+            catch (KeyNotFoundException)
+            {
+                return default;
+            }
         }
     }
 }
