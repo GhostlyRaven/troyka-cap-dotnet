@@ -2,6 +2,7 @@
 using TroykaCap.Expander;
 using Unosquare.WiringPi;
 using Unosquare.RaspberryIO;
+using Microsoft.Extensions.Logging;
 using TroykaCap.Expander.Extensions;
 
 namespace TroykaCap.Example4
@@ -9,69 +10,73 @@ namespace TroykaCap.Example4
     public static class Program
     {
         private static IGpioExpander Expander;
+        private static readonly ILogger Logger;
 
         static Program()
         {
             Pi.Init<BootstrapWiringPi>();
+
+            Logger = LoggerFactory.Create(log => log.AddConsole()).CreateLogger(nameof(Program));
         }
 
         public static void Main()
         {
-            Console.WriteLine("Start");
+            Logger.LogInformation("Start");
 
-            Console.WriteLine("Enter 1 or 2 to select a mode:");
-            Console.WriteLine("1. Change address.");
-            Console.WriteLine("2. Reset address.");
+            Logger.LogInformation("Enter 1 or 2 to select a mode:");
+            Logger.LogInformation("1. Change address.");
+            Logger.LogInformation("2. Reset address.");
 
-            string mode = Console.ReadLine();
-
-            switch (mode)
+            switch (Console.ReadLine())
             {
                 case "1":
                     {
-                        Expander = Pi.I2C.CreateGpioExpander();
-                        //Expander = Pi.I2C.SafeCreateGpioExpander();
+                        Expander = Pi.I2C.GetGpioExpander(logger: Logger);
 
-                        Console.WriteLine("Enter a new address:");
+                        Logger.LogInformation("Enter a new address:");
 
                         if (ushort.TryParse(Console.ReadLine(), out ushort address))
                         {
-                            Console.WriteLine($"Change address: {Expander.ChangeAddress(address)}");
-                            Console.WriteLine($"Save address: {Expander.SaveAddress()}");
+                            Expander.ChangeAddress(address);
+                            Expander.SaveAddress();
+
+                            Logger.LogInformation($"Change address.");
+                            Logger.LogInformation($"Save address.");
                         }
                         else
                         {
-                            Console.WriteLine("Invalid address value.");
+                            Logger.LogInformation("Invalid address value.");
                         }
 
                         break;
                     }
                 case "2":
                     {
-                        Console.WriteLine("Enter a current address:");
+                        Logger.LogInformation("Enter a current address:");
 
                         if (ushort.TryParse(Console.ReadLine(), out ushort address))
                         {
-                            Expander = Pi.I2C.CreateGpioExpander(address);
-                            //Expander = Pi.I2C.SafeCreateGpioExpander(address);
+                            Expander = Pi.I2C.GetGpioExpander(address, Logger);
 
-                            Console.WriteLine($"Reset address: {Expander.Reset()}");
+                            Expander.Reset();
+
+                            Logger.LogInformation($"Reset address.");
                         }
                         else
                         {
-                            Console.WriteLine("Invalid address value.");
+                            Logger.LogInformation("Invalid address value.");
                         }
 
                         break;
                     }
                 default:
                     {
-                        Console.WriteLine("Invalid mode value.");
+                        Logger.LogInformation("Invalid mode value.");
                         break;
                     }
             }
 
-            Console.WriteLine("Stop");
+            Logger.LogInformation("Stop");
         }
     }
 }
