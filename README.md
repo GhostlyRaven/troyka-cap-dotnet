@@ -40,10 +40,7 @@ PM> Install-Package TroykaCap.Expander
 
             //Get gpio expander.
             //CreateGpioExpander - throws an exception if the object is null, the I2C address has an invalid value or the device at the specified address was not found.
-            IGpioExpander expander = Pi.I2C.CreateGpioExpander();
-
-            //SafeCreateGpioExpander - returns null if the object is null, the I2C address is invalid, or the device at the specified address was not found.
-            //IGpioExpander expander = Pi.I2C.SafeCreateGpioExpander();
+            IGpioExpander expander = Pi.I2C.GetGpioExpander();
 
             Console.WriteLine("Start");
 
