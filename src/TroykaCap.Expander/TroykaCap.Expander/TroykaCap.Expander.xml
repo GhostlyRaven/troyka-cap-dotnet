@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TroykaCap.Expander</name>
+    </assembly>
+    <members>
+        <member name="T:TroykaCap.Expander.Extensions.I2CBusExtension">
+            <summary>
+            Extension class for I2C bus.
+            </summary>
+        </member>
+        <member name="M:TroykaCap.Expander.Extensions.I2CBusExtension.GetGpioExpander(Unosquare.RaspberryIO.Abstractions.II2CBus,System.Int32,Microsoft.Extensions.Logging.ILogger)">
+            <summary>
+            Creates an object of type IGpioExpander.
+            </summary>
+            <param name="bus">Object of type II2CBus.</param>
+            <param name="expanderAddress">Gpio expander address.</param>
+            <param name="logger">Object of type ILogger.</param>
+            <returns>Returns an object of type IGpioExpander.</returns>
+            <exception cref="T:System.ArgumentNullException">Object of type II2CBus is null.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">Invalid address value.</exception>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException">Device not found.</exception>
+        </member>
+        <member name="T:TroykaCap.Expander.IGpioExpander">
+            <summary>
+            Object of type IGpioExpander.
+            </summary>
+        </member>
+        <member name="M:TroykaCap.Expander.IGpioExpander.DigitalReadPort">
+            <summary>
+            Reads from the port.
+            </summary>
+            <returns>The sequence of bits on the port.</returns>
+        </member>
+        <member name="M:TroykaCap.Expander.IGpioExpander.DigitalWritePort(System.UInt16)">
+            <summary>
+            Writes to the port.
+            </summary>
+            <param name="value">The sequence of bits on the port.</param>
+        </member>
+        <member name="M:TroykaCap.Expander.IGpioExpander.PinMode(System.UInt16,TroykaCap.Expander.PinMode)">
+            <summary>
+            Sets the pin mode.
+            </summary>
+            <param name="pin">Pin number.</param>
+            <param name="mode">Pin mode.</param>
+        </member>
+        <member name="M:TroykaCap.Expander.IGpioExpander.DigitalWrite(System.UInt16,System.Boolean)">
+            <summary>
+            Writes a digital signal.
+            </summary>
+            <param name="pin">Pin number.</param>
+            <param name="value">High or low digital signal.</param>
+        </member>
+        <member name="M:TroykaCap.Expander.IGpioExpander.DigitalRead(System.UInt16)">
+            <summary>
+            Reads a digital signal.
+            </summary>
+            <param name="pin">Pin number.</param>
+            <returns>High or low digital signal.</returns>
+        </member>
+        <member name="M:TroykaCap.Expander.IGpioExpander.AnalogWrite(System.UInt16,System.Double)">
+            <summary>
+            Writes an analog signal.
+            </summary>
+            <param name="pin">Pin number.</param>
+            <param name="value">Analog signal value.</param>
+        </member>
+        <member name="M:TroykaCap.Expander.IGpioExpander.AnalogRead(System.UInt16)">
+            <summary>
+            Reads an analog signal.
+            </summary>
+            <param name="pin">Pin number.</param>
+            <returns>Analog signal value.</returns>
+        </member>
+        <member name="M:TroykaCap.Expander.IGpioExpander.PwmFreq(System.UInt16)">
+            <summary>
+            Sets the PWM frequency.
+            </summary>
+            <param name="freq">PWM frequency in Hz.</param>
+        </member>
+        <member name="M:TroykaCap.Expander.IGpioExpander.ChangeAddress(System.UInt16)">
+            <summary>
+            Sets a new address to the GPIO expander.
+            </summary>
+            <param name="newAddress">New GPIO expander address.</param>
+        </member>
+        <member name="M:TroykaCap.Expander.IGpioExpander.SaveAddress">
+            <summary>
+            Saves the new address to the GPIO expander.
+            </summary>
+        </member>
+        <member name="M:TroykaCap.Expander.IGpioExpander.Reset">
+            <summary>
+            Returns the base address to the GPIO expander.
+            </summary>
+        </member>
+        <member name="T:TroykaCap.Expander.PinMode">
+            <summary>
+            Pin mode
+            </summary>
+        </member>
+        <member name="F:TroykaCap.Expander.PinMode.Input">
+            <summary>
+            Input
+            </summary>
+        </member>
+        <member name="F:TroykaCap.Expander.PinMode.Output">
+            <summary>
+            Output
+            </summary>
+        </member>
+        <member name="F:TroykaCap.Expander.PinMode.InputPullUp">
+            <summary>
+            Input pull up
+            </summary>
+        </member>
+        <member name="F:TroykaCap.Expander.PinMode.InputPullDown">
+            <summary>
+            Input pull down
+            </summary>
+        </member>
+    </members>
+</doc>

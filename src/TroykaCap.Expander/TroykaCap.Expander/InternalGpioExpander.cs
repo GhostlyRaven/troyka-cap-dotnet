@@ -1,4 +1,5 @@
-﻿using TroykaCap.Expander.Extensions;
+﻿using Microsoft.Extensions.Logging;
+using TroykaCap.Expander.Extensions;
 using Unosquare.RaspberryIO.Abstractions;
 
 namespace TroykaCap.Expander
@@ -26,51 +27,73 @@ namespace TroykaCap.Expander
 
         #endregion
 
+        private readonly ILogger _logger;
         private readonly II2CDevice _gpioExpander;
 
-        internal InternalGpioExpander(II2CDevice gpioExpander)
+        internal InternalGpioExpander(II2CDevice gpioExpander, ILogger logger)
         {
             _gpioExpander = gpioExpander;
+            _logger = logger;
         }
 
         #region Digital functions
 
         public ushort DigitalReadPort()
         {
-            return ReverseUInt16(_gpioExpander.SafeReadAddressWord(GpioExpanderDigitalRead));
+            return ReverseUInt16(_gpioExpander.SafeReadAddressWord(GpioExpanderDigitalRead, _logger));
         }
 
-        public bool DigitalWritePort(ushort value)
+        public void DigitalWritePort(ushort value)
         {
             ushort data = ReverseUInt16(value);
 
-            return _gpioExpander.SafeWriteAddressWord(GpioExpanderDigitalWriteHigh, data) &&
-                   _gpioExpander.SafeWriteAddressWord(GpioExpanderDigitalWriteLow, (ushort)~data);
+            _gpioExpander.SafeWriteAddressWord(GpioExpanderDigitalWriteHigh, data, _logger);
+            _gpioExpander.SafeWriteAddressWord(GpioExpanderDigitalWriteLow, (ushort)~data, _logger);
         }
 
-        public bool PinMode(ushort pin, PinMode mode)
+        public void PinMode(ushort pin, PinMode mode)
         {
             ushort data = Mask(pin);
 
             data = ReverseUInt16(data);
 
-            return mode switch
+            switch (mode)
             {
-                Expander.PinMode.Input => _gpioExpander.SafeWriteAddressWord(GpioExpanderPortModeInput, data),
-                Expander.PinMode.InputPullUp => _gpioExpander.SafeWriteAddressWord(GpioExpanderPortModePullUp, data),
-                Expander.PinMode.InputPullDown => _gpioExpander.SafeWriteAddressWord(GpioExpanderPortModePullDown, data),
-                Expander.PinMode.Output => _gpioExpander.SafeWriteAddressWord(GpioExpanderPortModeOutput, data),
-                _ => false
-            };
+                case Expander.PinMode.Input:
+                    {
+                        _gpioExpander.SafeWriteAddressWord(GpioExpanderPortModeInput, data, _logger);
+                        break;
+                    }
+                case Expander.PinMode.InputPullUp:
+                    {
+                        _gpioExpander.SafeWriteAddressWord(GpioExpanderPortModePullUp, data, _logger);
+                        break;
+                    }
+                case Expander.PinMode.InputPullDown:
+                    {
+                        _gpioExpander.SafeWriteAddressWord(GpioExpanderPortModePullDown, data, _logger);
+                        break;
+                    }
+                case Expander.PinMode.Output:
+                    {
+                        _gpioExpander.SafeWriteAddressWord(GpioExpanderPortModeOutput, data, _logger);
+                        break;
+                    }
+                default:
+                    {
+                        _logger.LogWarning("{0} method. Invalid pin mode value ({1}).", nameof(I2CDeviceExtension.SafeWriteAddressWord), mode);
+                        break;
+                    }
+            }
         }
 
-        public bool DigitalWrite(ushort pin, bool value)
+        public void DigitalWrite(ushort pin, bool value)
         {
             ushort data = Mask(pin);
 
             data = ReverseUInt16(data);
 
-            return _gpioExpander.SafeWriteAddressWord(value ? GpioExpanderDigitalWriteHigh : GpioExpanderDigitalWriteLow, data);
+            _gpioExpander.SafeWriteAddressWord(value ? GpioExpanderDigitalWriteHigh : GpioExpanderDigitalWriteLow, data, _logger);
         }
 
         public bool DigitalRead(ushort pin)
@@ -82,13 +105,13 @@ namespace TroykaCap.Expander
 
         #region Analog functions
 
-        public bool AnalogWrite(ushort pin, double value)
+        public void AnalogWrite(ushort pin, double value)
         {
             ushort data = (ushort)(value * AnalogWriteMultiplier);
 
             data = (ushort)((pin & 0xff) | ((data & 0xff) << 8));
 
-            return _gpioExpander.SafeWriteAddressWord(GpioExpanderAnalogWrite, data);
+            _gpioExpander.SafeWriteAddressWord(GpioExpanderAnalogWrite, data, _logger);
         }
 
         public double AnalogRead(ushort pin)
@@ -96,28 +119,28 @@ namespace TroykaCap.Expander
             return AnalogRead16(pin) / AnalogReadDivisor;
         }
 
-        public bool PwmFreq(ushort freq)
+        public void PwmFreq(ushort freq)
         {
-            return _gpioExpander.SafeWriteAddressWord(GpioExpanderPwmFreq, ReverseUInt16(freq));
+            _gpioExpander.SafeWriteAddressWord(GpioExpanderPwmFreq, ReverseUInt16(freq), _logger);
         }
 
         #endregion
 
         #region Shield settings
 
-        public bool ChangeAddress(ushort newAddress)
+        public void ChangeAddress(ushort newAddress)
         {
-            return _gpioExpander.SafeWriteAddressWord(GpioExpanderChangeI2CAddress, newAddress);
+            _gpioExpander.SafeWriteAddressWord(GpioExpanderChangeI2CAddress, newAddress, _logger);
         }
 
-        public bool SaveAddress()
+        public void SaveAddress()
         {
-            return _gpioExpander.SafeWrite(GpioExpanderSaveI2CAddress);
+            _gpioExpander.SafeWrite(GpioExpanderSaveI2CAddress, _logger);
         }
 
-        public bool Reset()
+        public void Reset()
         {
-            return _gpioExpander.SafeWrite(GpioExpanderReset);
+            _gpioExpander.SafeWrite(GpioExpanderReset, _logger);
         }
 
         #endregion
@@ -131,9 +154,9 @@ namespace TroykaCap.Expander
 
         private ushort AnalogRead16(ushort pin)
         {
-            _gpioExpander.SafeWriteAddressWord(GpioExpanderAnalogRead, pin);
+            _gpioExpander.SafeWriteAddressWord(GpioExpanderAnalogRead, pin, _logger);
 
-            return ReverseUInt16(_gpioExpander.SafeReadAddressWord(GpioExpanderAnalogRead));
+            return ReverseUInt16(_gpioExpander.SafeReadAddressWord(GpioExpanderAnalogRead, _logger));
         }
 
         private ushort Mask(ushort pin)
