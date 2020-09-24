@@ -81,7 +81,7 @@ namespace TroykaCap.Expander
                     }
                 default:
                     {
-                        _logger.LogWarning("{0} method. Invalid pin mode value ({1}).", nameof(I2CDeviceExtension.SafeWriteAddressWord), mode);
+                        _logger.LogWarning(LogMessages.WarningForPinMode, nameof(I2CDeviceExtension.SafeWriteAddressWord), mode);
                         break;
                     }
             }

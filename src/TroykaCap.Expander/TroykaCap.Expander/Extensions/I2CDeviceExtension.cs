@@ -14,12 +14,12 @@ namespace TroykaCap.Expander.Extensions
             }
             catch (HardwareException error)
             {
-                logger?.LogWarning(error, "{0} method. Unable to write data ({1}) to the I2C bus for transmission to the end device.", nameof(SafeWrite), data);
+                logger?.LogWarning(error, LogMessages.WarningForSafeWrite, nameof(SafeWrite), data);
 
                 return;
             }
 
-            logger?.LogInformation("{0} method. Successfully to write data ({1}) to the I2C bus for transfer to the end device.", nameof(SafeWrite), data);
+            logger?.LogInformation(LogMessages.InformationForSafeWrite, nameof(SafeWrite), data);
         }
 
         internal static ushort SafeReadAddressWord(this II2CDevice device, int address, ILogger logger)
@@ -32,12 +32,12 @@ namespace TroykaCap.Expander.Extensions
             }
             catch (HardwareException error)
             {
-                logger?.LogWarning(error, "{0} method. Unable to read data ({1}) from I2C bus from end device ({2}).", nameof(SafeReadAddressWord), data, address);
+                logger?.LogWarning(error, LogMessages.WarningForSafeReadAddressWord, nameof(SafeReadAddressWord), data, address);
 
                 return data;
             }
 
-            logger?.LogInformation("{0} method. Successfully to read data ({1}) from the I2C bus from the end device ({2}).", nameof(SafeReadAddressWord), data, address);
+            logger?.LogInformation(LogMessages.InformationForSafeReadAddressWord, nameof(SafeReadAddressWord), data, address);
 
             return data;
         }
@@ -50,12 +50,12 @@ namespace TroykaCap.Expander.Extensions
             }
             catch (HardwareException error)
             {
-                logger?.LogWarning(error, "{0} method. Unable to write data ({1}) to the I2C bus for transmission to the end device ({2}).", nameof(SafeWriteAddressWord), data, address);
+                logger?.LogWarning(error, LogMessages.WarningForSafeWriteAddressWord, nameof(SafeWriteAddressWord), data, address);
 
                 return;
             }
 
-            logger?.LogInformation("{0} method. Successfully to write data ({1}) to the I2C bus for transfer to the end device ({2}).", nameof(SafeWriteAddressWord), data, address);
+            logger?.LogInformation(LogMessages.InformationForSafeWriteAddressWord, nameof(SafeWriteAddressWord), data, address);
         }
     }
 }
