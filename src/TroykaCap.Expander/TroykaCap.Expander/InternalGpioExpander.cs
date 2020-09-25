@@ -81,7 +81,7 @@ namespace TroykaCap.Expander
                     }
                 default:
                     {
-                        _logger.LogWarning(LogMessages.WarningForPinMode, nameof(I2CDeviceExtension.SafeWriteAddressWord), mode);
+                        _logger.LogWarning(Messages.WarningForPinMode, nameof(I2CDeviceExtension.SafeWriteAddressWord), mode);
                         break;
                     }
             }

@@ -14,12 +14,12 @@ namespace TroykaCap.Expander.Extensions
             }
             catch (HardwareException error)
             {
-                logger?.LogWarning(error, LogMessages.WarningForSafeWrite, nameof(SafeWrite), data);
+                logger?.LogWarning(error, Messages.WarningForSafeWrite, nameof(SafeWrite), data);
 
                 return;
             }
 
-            logger?.LogInformation(LogMessages.InformationForSafeWrite, nameof(SafeWrite), data);
+            logger?.LogInformation(Messages.InformationForSafeWrite, nameof(SafeWrite), data);
         }
 
         internal static ushort SafeReadAddressWord(this II2CDevice device, int address, ILogger logger)
@@ -32,12 +32,12 @@ namespace TroykaCap.Expander.Extensions
             }
             catch (HardwareException error)
             {
-                logger?.LogWarning(error, LogMessages.WarningForSafeReadAddressWord, nameof(SafeReadAddressWord), data, address);
+                logger?.LogWarning(error, Messages.WarningForSafeReadAddressWord, nameof(SafeReadAddressWord), data, address);
 
                 return data;
             }
 
-            logger?.LogInformation(LogMessages.InformationForSafeReadAddressWord, nameof(SafeReadAddressWord), data, address);
+            logger?.LogInformation(Messages.InformationForSafeReadAddressWord, nameof(SafeReadAddressWord), data, address);
 
             return data;
         }
@@ -50,12 +50,12 @@ namespace TroykaCap.Expander.Extensions
             }
             catch (HardwareException error)
             {
-                logger?.LogWarning(error, LogMessages.WarningForSafeWriteAddressWord, nameof(SafeWriteAddressWord), data, address);
+                logger?.LogWarning(error, Messages.WarningForSafeWriteAddressWord, nameof(SafeWriteAddressWord), data, address);
 
                 return;
             }
 
-            logger?.LogInformation(LogMessages.InformationForSafeWriteAddressWord, nameof(SafeWriteAddressWord), data, address);
+            logger?.LogInformation(Messages.InformationForSafeWriteAddressWord, nameof(SafeWriteAddressWord), data, address);
         }
     }
 }
