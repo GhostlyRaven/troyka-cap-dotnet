@@ -4,18 +4,47 @@
         <name>TroykaCap.Expander</name>
     </assembly>
     <members>
+        <member name="T:TroykaCap.Expander.ErrorEventArgs">
+            <summary>
+            Contains the inner exception Gpio expander.
+            </summary>
+        </member>
+        <member name="P:TroykaCap.Expander.ErrorEventArgs.Error">
+            <summary>
+            Returns the inner exception Gpio expander.
+            </summary>
+        </member>
+        <member name="M:TroykaCap.Expander.ErrorEventArgs.op_Implicit(System.Exception)~TroykaCap.Expander.ErrorEventArgs">
+            <summary>
+            Cast the inner exception Gpio expander to type ErrorEventArgs.
+            </summary>
+            <param name="error">Inner exception Gpio expander.</param>
+            <returns>Object of type ErrorEventArgs.</returns>
+        </member>
+        <member name="T:TroykaCap.Expander.Extensions.GpioExpanderExtension">
+            <summary>
+            Provides additional functions for working with the Gpio expander.
+            </summary>
+        </member>
+        <member name="M:TroykaCap.Expander.Extensions.GpioExpanderExtension.TroykaButtonClick(TroykaCap.Expander.IGpioExpander,System.UInt16)">
+            <summary>
+            Fixes click of the TroykaButton.
+            </summary>
+            <param name="expander">Object of type IGpioExpander.</param>
+            <param name="pin">Pin number.</param>
+            <returns>True - click, False - not click.</returns>
+        </member>
         <member name="T:TroykaCap.Expander.Extensions.I2CBusExtension">
             <summary>
             Extension class for I2C bus.
             </summary>
         </member>
-        <member name="M:TroykaCap.Expander.Extensions.I2CBusExtension.GetGpioExpander(Unosquare.RaspberryIO.Abstractions.II2CBus,System.Int32,Microsoft.Extensions.Logging.ILogger)">
+        <member name="M:TroykaCap.Expander.Extensions.I2CBusExtension.GetGpioExpander(Unosquare.RaspberryIO.Abstractions.II2CBus,System.Int32)">
             <summary>
             Creates an object of type IGpioExpander.
             </summary>
             <param name="bus">Object of type II2CBus.</param>
-            <param name="expanderAddress">Gpio expander address.</param>
-            <param name="logger">Object of type ILogger.</param>
+            <param name="address">Gpio expander address.</param>
             <returns>Returns an object of type IGpioExpander.</returns>
             <exception cref="T:System.ArgumentNullException">Object of type II2CBus is null.</exception>
             <exception cref="T:System.ArgumentOutOfRangeException">Invalid address value.</exception>
@@ -93,6 +122,11 @@
         <member name="M:TroykaCap.Expander.IGpioExpander.Reset">
             <summary>
             Returns the base address to the GPIO expander.
+            </summary>
+        </member>
+        <member name="E:TroykaCap.Expander.IGpioExpander.Error">
+            <summary>
+            Occurs when an error occurs while working with the gpio expander.
             </summary>
         </member>
         <member name="T:TroykaCap.Expander.PinMode">

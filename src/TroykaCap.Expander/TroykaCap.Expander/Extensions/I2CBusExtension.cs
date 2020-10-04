@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Extensions.Logging;
+using TroykaCap.Expander.Internal;
 using Unosquare.RaspberryIO.Abstractions;
 
 namespace TroykaCap.Expander.Extensions
@@ -14,25 +14,24 @@ namespace TroykaCap.Expander.Extensions
         /// Creates an object of type IGpioExpander.
         /// </summary>
         /// <param name="bus">Object of type II2CBus.</param>
-        /// <param name="expanderAddress">Gpio expander address.</param>
-        /// <param name="logger">Object of type ILogger.</param>
+        /// <param name="address">Gpio expander address.</param>
         /// <returns>Returns an object of type IGpioExpander.</returns>
         /// <exception cref="ArgumentNullException">Object of type II2CBus is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Invalid address value.</exception>
         /// <exception cref="KeyNotFoundException">Device not found.</exception>
-        public static IGpioExpander GetGpioExpander(this II2CBus bus, int expanderAddress = 0x2A, ILogger logger = default)
+        public static IGpioExpander GetGpioExpander(this II2CBus bus, int address = 0x2A)
         {
             if (bus is null)
             {
-                throw new ArgumentNullException(nameof(bus), Messages.ArgumentNullException);
+                throw new ArgumentNullException(nameof(bus), ErrorMessages.Bus);
             }
 
-            if (expanderAddress < 0 || expanderAddress > 127)
+            if (address < 0 || address > 127)
             {
-                throw new ArgumentOutOfRangeException(nameof(expanderAddress), expanderAddress, Messages.ArgumentOutOfRangeException);
+                throw new ArgumentOutOfRangeException(nameof(address), address, ErrorMessages.Address);
             }
 
-            return new InternalGpioExpander(bus.AddDevice(expanderAddress), logger);
+            return new GpioExpander(bus.AddDevice(address));
         }
     }
 }

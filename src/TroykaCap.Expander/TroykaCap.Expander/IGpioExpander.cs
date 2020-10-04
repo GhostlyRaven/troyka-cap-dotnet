@@ -1,4 +1,6 @@
-﻿namespace TroykaCap.Expander
+﻿using System;
+
+namespace TroykaCap.Expander
 {
     /// <summary>
     /// Object of type IGpioExpander.
@@ -83,6 +85,15 @@
         /// Returns the base address to the GPIO expander.
         /// </summary>
         void Reset();
+
+        #endregion
+
+        #region Event functions
+
+        /// <summary>
+        /// Occurs when an error occurs while working with the gpio expander.
+        /// </summary>
+        public event EventHandler<ErrorEventArgs> Error;
 
         #endregion
     }

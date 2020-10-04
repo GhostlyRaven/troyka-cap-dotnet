@@ -6,14 +6,17 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-	  <DebugType>none</DebugType>
-	  <DebugSymbols>false</DebugSymbols>
+		<DebugType>none</DebugType>
+		<DebugSymbols>false</DebugSymbols>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="TroykaCap.Expander" Version="1.2.5" />
 		<PackageReference Include="Unosquare.WiringPi" Version="0.5.1" />
 		<PackageReference Include="Unosquare.Raspberry.IO" Version="0.27.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\TroykaCap.Expander\TroykaCap.Expander.csproj" />
 	</ItemGroup>
 
 </Project>

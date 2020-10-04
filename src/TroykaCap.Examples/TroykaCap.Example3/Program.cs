@@ -1,31 +1,28 @@
-﻿using TroykaCap.Expander;
+﻿using System;
+using TroykaCap.Expander;
 using Unosquare.WiringPi;
 using Unosquare.RaspberryIO;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using TroykaCap.Expander.Extensions;
 
 namespace TroykaCap.Example3
 {
     public static class Program
     {
-        private static readonly ILogger Logger;
         private static readonly IGpioExpander Expander;
 
         static Program()
         {
             Pi.Init<BootstrapWiringPi>();
 
-            Expander = Pi.I2C.GetGpioExpander(logger: Logger);
-
-            Logger = LoggerFactory.Create(log => log.AddConsole()).CreateLogger(nameof(Program));
+            Expander = Pi.I2C.GetGpioExpander();
         }
 
         public static void Main()
         {
-            Logger.LogInformation("Start");
+            Console.WriteLine("Start");
 
-            Logger.LogInformation($"Port: {Expander.DigitalReadPort()}");
+            Console.WriteLine("Port: {0}", Expander.DigitalReadPort());
 
             Expander.DigitalWritePort(255);
 
@@ -33,9 +30,9 @@ namespace TroykaCap.Example3
 
             Expander.DigitalWritePort(0);
 
-            Logger.LogInformation($"Port: {Expander.DigitalReadPort()}");
+            Console.WriteLine("Port: {0}", Expander.DigitalReadPort());
 
-            Logger.LogInformation("Stop");
+            Console.WriteLine("Stop");
         }
     }
 }
