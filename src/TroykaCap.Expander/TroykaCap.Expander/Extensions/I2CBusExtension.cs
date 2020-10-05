@@ -23,12 +23,12 @@ namespace TroykaCap.Expander.Extensions
         {
             if (bus is null)
             {
-                throw new ArgumentNullException(nameof(bus), ErrorMessages.Bus);
+                throw new ArgumentNullException(nameof(bus), Errors.I2CBus);
             }
 
             if (address < 0 || address > 127)
             {
-                throw new ArgumentOutOfRangeException(nameof(address), address, ErrorMessages.Address);
+                throw new ArgumentOutOfRangeException(nameof(address), address, Errors.I2CAddress);
             }
 
             return new GpioExpander(bus.AddDevice(address));

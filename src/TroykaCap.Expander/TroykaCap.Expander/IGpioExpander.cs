@@ -7,6 +7,15 @@ namespace TroykaCap.Expander
     /// </summary>
     public interface IGpioExpander
     {
+        #region Event functions
+
+        /// <summary>
+        /// Occurs when an error occurs while working with the gpio expander.
+        /// </summary>
+        public event EventHandler<ErrorEventArgs> Error;
+
+        #endregion
+
         #region Digital functions
 
         /// <summary>
@@ -85,15 +94,6 @@ namespace TroykaCap.Expander
         /// Returns the base address to the GPIO expander.
         /// </summary>
         void Reset();
-
-        #endregion
-
-        #region Event functions
-
-        /// <summary>
-        /// Occurs when an error occurs while working with the gpio expander.
-        /// </summary>
-        public event EventHandler<ErrorEventArgs> Error;
 
         #endregion
     }
