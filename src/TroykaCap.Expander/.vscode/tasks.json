@@ -1,0 +1,42 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "command": "dotnet",
+            "type": "process",
+            "windows": {
+                "args": [
+                    "build",
+                    "${workspaceFolder}\\${config:debugger.projectName}\\${config:debugger.projectName}.csproj"
+                ]
+            },
+            "linux": {
+                "args": [
+                    "build",
+                    "${workspaceFolder}/${config:debugger.projectName}/${config:debugger.projectName}.csproj"
+                ],
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publish",
+            "type": "shell",
+            "dependsOn": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "windows": {
+                "command": "${cwd}\\.vscode\\publish.bat ${cwd}\\${config:debugger.projectName}\\${config:debugger.windowsPublishFolder} ${config:debugger.linuxFolder} ${config:debugger.piIp} ${config:debugger.piUser} ${config:debugger.piPassword}"
+            },
+            "linux": {
+                "command": "${cwd}/.vscode/publish.sh ${cwd}/${config:debugger.projectName}/${config:debugger.linuxPublishFolder} ${config:debugger.linuxFolder} ${config:debugger.piIp} ${config:debugger.piUser} ${config:debugger.piPassword}"
+            },
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}

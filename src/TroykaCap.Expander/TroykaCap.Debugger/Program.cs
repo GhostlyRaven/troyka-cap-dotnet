@@ -4,6 +4,7 @@ using Unosquare.WiringPi;
 using Unosquare.RaspberryIO;
 using System.Threading.Tasks;
 using TroykaCap.Expander.Extensions;
+using RemoteDebugger = System.Diagnostics.Debugger;
 
 namespace TroykaCap.Debugger
 {
@@ -23,11 +24,11 @@ namespace TroykaCap.Debugger
             _expander.Error += Expander_Error;
         }
 
-        public static void Main()
+        public static void Main(string[] args)
         {
-            Console.WriteLine("Start");
+            Console.WriteLine("Start.");
 
-            switch (Console.ReadLine())
+            switch (ReadProgramMode(args, 0))
             {
                 case nameof(Analog):
                     {
@@ -54,9 +55,14 @@ namespace TroykaCap.Debugger
                         Pwm();
                         break;
                     }
+                default:
+                    {
+                        Console.WriteLine("Invalid program mode.");
+                        break;
+                    }
             }
 
-            Console.WriteLine("Stop");
+            Console.WriteLine("Stop.");
         }
 
         private static void Analog()
@@ -90,11 +96,11 @@ namespace TroykaCap.Debugger
         {
             Console.WriteLine("Port: {0}", _expander.DigitalReadPort());
 
-            _expander.DigitalPortHigh();
+            _expander.DigitalPortHighLevel();
 
             Task.Delay(60000).Wait();
 
-            _expander.DigitalPortLow();
+            _expander.DigitalPortLowLevel();
 
             Console.WriteLine("Port: {0}", _expander.DigitalReadPort());
         }
@@ -184,9 +190,24 @@ namespace TroykaCap.Debugger
             _expander.AnalogWrite(0, 0);
         }
 
+        private static string ReadProgramMode(string[] args, int index)
+        {
+            if (args.Length == 0)
+            {
+                return Console.ReadLine();
+            }
+
+            if (args.Length > index)
+            {
+                return args[index];
+            }
+
+            return string.Empty;
+        }
+
         private static bool Exit()
         {
-            return !(Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Escape);
+            return RemoteDebugger.IsAttached || !(Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Escape);
         }
 
         private static void Expander_Error(object sender, ErrorEventArgs e)

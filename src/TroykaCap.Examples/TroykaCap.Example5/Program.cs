@@ -24,7 +24,7 @@ namespace TroykaCap.Example5
 
         public static void Main()
         {
-            Console.WriteLine("Start");
+            Console.WriteLine("Start.");
 
             Expander.PwmFreq(Freq);
 
@@ -52,7 +52,7 @@ namespace TroykaCap.Example5
 
             Expander.AnalogWrite(Pin, 0);
 
-            Console.WriteLine("Stop");
+            Console.WriteLine("Stop.");
         }
     }
 }

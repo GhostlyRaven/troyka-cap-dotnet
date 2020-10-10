@@ -3,6 +3,7 @@ using TroykaCap.Expander;
 using Unosquare.WiringPi;
 using Unosquare.RaspberryIO;
 using TroykaCap.Expander.Extensions;
+using RemoteDebugger = System.Diagnostics.Debugger;
 
 namespace TroykaCap.Example2
 {
@@ -22,7 +23,7 @@ namespace TroykaCap.Example2
 
         public static void Main()
         {
-            Console.WriteLine("Start");
+            Console.WriteLine("Start.");
 
             Expander.PinMode(Pin1, PinMode.Input);
             Expander.PinMode(Pin2, PinMode.Output);
@@ -36,12 +37,12 @@ namespace TroykaCap.Example2
                 Expander.DigitalWrite(Pin2, result);
             }
 
-            Console.WriteLine("Stop");
+            Console.WriteLine("Stop.");
         }
 
         private static bool Exit()
         {
-            return !(Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Escape);
+            return RemoteDebugger.IsAttached || !(Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Escape);
         }
     }
 }

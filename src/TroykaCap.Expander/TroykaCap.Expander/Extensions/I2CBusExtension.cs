@@ -14,7 +14,7 @@ namespace TroykaCap.Expander.Extensions
         /// Creates an object of type IGpioExpander.
         /// </summary>
         /// <param name="bus">Object of type II2CBus.</param>
-        /// <param name="address">Gpio expander address.</param>
+        /// <param name="address">GPIO expander address.</param>
         /// <returns>Returns an object of type IGpioExpander.</returns>
         /// <exception cref="ArgumentNullException">Object of type II2CBus is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Invalid address value.</exception>

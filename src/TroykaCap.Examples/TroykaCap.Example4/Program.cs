@@ -15,15 +15,15 @@ namespace TroykaCap.Example4
             Pi.Init<BootstrapWiringPi>();
         }
 
-        public static void Main()
+        public static void Main(string[] args)
         {
-            Console.WriteLine("Start");
+            Console.WriteLine("Start.");
 
             Console.WriteLine("Enter 1 or 2 to select a mode:");
             Console.WriteLine("1. Change address.");
             Console.WriteLine("2. Reset address.");
 
-            switch (Console.ReadLine())
+            switch (ReadProgramMode(args, 0))
             {
                 case "1":
                     {
@@ -31,7 +31,7 @@ namespace TroykaCap.Example4
 
                         Console.WriteLine("Enter a new address:");
 
-                        if (ushort.TryParse(Console.ReadLine(), out ushort address))
+                        if (ushort.TryParse(ReadProgramMode(args, 1), out ushort address))
                         {
                             Expander.ChangeAddress(address);
 
@@ -52,7 +52,7 @@ namespace TroykaCap.Example4
                     {
                         Console.WriteLine("Enter a current address:");
 
-                        if (ushort.TryParse(Console.ReadLine(), out ushort address))
+                        if (ushort.TryParse(ReadProgramMode(args, 1), out ushort address))
                         {
                             Expander = Pi.I2C.GetGpioExpander(address);
 
@@ -74,7 +74,22 @@ namespace TroykaCap.Example4
                     }
             }
 
-            Console.WriteLine("Stop");
+            Console.WriteLine("Stop.");
+        }
+
+        private static string ReadProgramMode(string[] args, int index)
+        {
+            if (args.Length == 0)
+            {
+                return Console.ReadLine();
+            }
+
+            if (args.Length > index)
+            {
+                return args[index];
+            }
+
+            return string.Empty;
         }
     }
 }

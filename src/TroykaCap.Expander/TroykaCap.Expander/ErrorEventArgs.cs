@@ -3,7 +3,7 @@
 namespace TroykaCap.Expander
 {
     /// <summary>
-    /// Contains the inner exception Gpio expander.
+    /// Contains the inner exception GPIO expander.
     /// </summary>
     public sealed class ErrorEventArgs : EventArgs
     {
@@ -13,14 +13,14 @@ namespace TroykaCap.Expander
         }
 
         /// <summary>
-        /// Returns the inner exception Gpio expander.
+        /// Returns the inner exception GPIO expander.
         /// </summary>
         public Exception Error { get; }
 
         /// <summary>
-        /// Cast the inner exception Gpio expander to type ErrorEventArgs.
+        /// Cast the inner exception GPIO expander to type ErrorEventArgs.
         /// </summary>
-        /// <param name="error">Inner exception Gpio expander.</param>
+        /// <param name="error">Inner exception GPIO expander.</param>
         /// <returns>Object of type ErrorEventArgs.</returns>
         public static implicit operator ErrorEventArgs(Exception error)
         {

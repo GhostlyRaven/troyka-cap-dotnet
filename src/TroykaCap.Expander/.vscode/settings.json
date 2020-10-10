@@ -1,0 +1,17 @@
+{
+    //https://code.visualstudio.com/docs/editor/variables-reference
+    //https://www.jenx.si/2020/06/19/dot-net-core-remote-debugging-raspberry-pi/
+    //https://www.hanselman.com/blog/RemoteDebuggingWithVSCodeOnWindowsToARaspberryPiUsingNETCoreOnARM.aspx
+    
+    "debugger": {
+        "piUser": "pi",
+        "piPassword": "rpi",
+        "piIp": "192.168.210.20",
+        "projectName": "TroykaCap.Debugger",
+        "linuxFileName": "TroykaCap.Debugger.dll",
+        "linuxFolder": "/home/pi/Desktop/TroykaCap.Debugger",
+        "linuxPublishFolder": "bin/Debug/netcoreapp3.1/publish",
+        "windowsPublishFolder": "bin\\Debug\\netcoreapp3.1\\publish",
+        "troykaCapMode": "Analog"
+    }
+}

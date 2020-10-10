@@ -20,7 +20,7 @@ namespace TroykaCap.Example3
 
         public static void Main()
         {
-            Console.WriteLine("Start");
+            Console.WriteLine("Start.");
 
             Console.WriteLine("Port: {0}", Expander.DigitalReadPort());
 
@@ -32,7 +32,7 @@ namespace TroykaCap.Example3
 
             Console.WriteLine("Port: {0}", Expander.DigitalReadPort());
 
-            Console.WriteLine("Stop");
+            Console.WriteLine("Stop.");
         }
     }
 }

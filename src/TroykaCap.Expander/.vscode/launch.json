@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Remote debug",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "publish",
+            "program": "/opt/dotnet/dotnet",
+            "args": [
+                "${config:debugger.linuxFolder}/${config:debugger.linuxFileName}",
+                "${config:debugger.troykaCapMode}"
+            ],
+            "cwd": "${config:debugger.linuxFolder}",
+            "stopAtEntry": false,
+            "console": "internalConsole",
+            "pipeTransport": {
+                "pipeCwd": "${workspaceFolder}",
+                "pipeProgram": "plink",
+                "pipeArgs": [
+                    "${config:debugger.piUser}@${config:debugger.piIp}",
+                    "-pw",
+                    "${config:debugger.piPassword}"
+                ],
+                "debuggerPath": "/opt/dotnet/vsdbg/vsdbg"
+            }
+        }
+    ]
+}

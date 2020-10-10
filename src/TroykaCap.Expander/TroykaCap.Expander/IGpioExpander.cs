@@ -10,7 +10,7 @@ namespace TroykaCap.Expander
         #region Event functions
 
         /// <summary>
-        /// Occurs when an error occurs while working with the gpio expander.
+        /// Occurs when an error occurs while working with the GPIO expander.
         /// </summary>
         public event EventHandler<ErrorEventArgs> Error;
 
