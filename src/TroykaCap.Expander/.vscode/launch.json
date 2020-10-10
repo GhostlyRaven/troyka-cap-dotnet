@@ -9,7 +9,9 @@
             "program": "/opt/dotnet/dotnet",
             "args": [
                 "${config:debugger.linuxFolder}/${config:debugger.linuxFileName}",
-                "${config:debugger.troykaCapMode}"
+                "${config:debugger.troykaCapMode}",
+                "${config:debugger.troykaCapAddressMode}",
+                "${config:debugger.troykaCapAddress}"
             ],
             "cwd": "${config:debugger.linuxFolder}",
             "stopAtEntry": false,

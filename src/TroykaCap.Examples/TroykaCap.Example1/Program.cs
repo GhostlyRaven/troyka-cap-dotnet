@@ -19,6 +19,8 @@ namespace TroykaCap.Example1
             Pi.Init<BootstrapWiringPi>();
 
             Expander = Pi.I2C.GetGpioExpander();
+
+            Expander.Error += Expander_Error;
         }
 
         public static void Main()
@@ -40,6 +42,18 @@ namespace TroykaCap.Example1
         private static bool Exit()
         {
             return RemoteDebugger.IsAttached || !(Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Escape);
+        }
+
+        private static void Expander_Error(object sender, ErrorEventArgs e)
+        {
+            if (e.HasValue)
+            {
+                Console.WriteLine(e.Error);
+            }
+            else
+            {
+                Console.WriteLine("Error is null.");
+            }
         }
     }
 }

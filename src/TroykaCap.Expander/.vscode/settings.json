@@ -6,12 +6,14 @@
     "debugger": {
         "piUser": "pi",
         "piPassword": "rpi",
-        "piIp": "192.168.210.20",
+        "piIp": "192.168.1.6",
         "projectName": "TroykaCap.Debugger",
         "linuxFileName": "TroykaCap.Debugger.dll",
         "linuxFolder": "/home/pi/Desktop/TroykaCap.Debugger",
         "linuxPublishFolder": "bin/Debug/netcoreapp3.1/publish",
         "windowsPublishFolder": "bin\\Debug\\netcoreapp3.1\\publish",
-        "troykaCapMode": "Analog"
+        "troykaCapMode": "Analog",
+        "troykaCapAddressMode": "1",
+        "troykaCapAddress": "41"
     }
 }

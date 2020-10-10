@@ -20,6 +20,8 @@ namespace TroykaCap.Example5
             Pi.Init<BootstrapWiringPi>();
 
             Expander = Pi.I2C.GetGpioExpander();
+
+            Expander.Error += Expander_Error;
         }
 
         public static void Main()
@@ -53,6 +55,18 @@ namespace TroykaCap.Example5
             Expander.AnalogWrite(Pin, 0);
 
             Console.WriteLine("Stop.");
+        }
+
+        private static void Expander_Error(object sender, ErrorEventArgs e)
+        {
+            if (e.HasValue)
+            {
+                Console.WriteLine(e.Error);
+            }
+            else
+            {
+                Console.WriteLine("Error is null.");
+            }
         }
     }
 }
