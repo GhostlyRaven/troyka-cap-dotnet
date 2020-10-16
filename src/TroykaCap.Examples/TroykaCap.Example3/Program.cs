@@ -16,6 +16,8 @@ namespace TroykaCap.Example3
             Pi.Init<BootstrapWiringPi>();
 
             Expander = Pi.I2C.GetGpioExpander();
+
+            Expander.Error += Expander_Error;
         }
 
         public static void Main()
@@ -24,15 +26,27 @@ namespace TroykaCap.Example3
 
             Console.WriteLine("Port: {0}", Expander.DigitalReadPort());
 
-            Expander.DigitalWritePort(255);
+            Expander.DigitalPortHighLevel();
 
             Task.Delay(60000).Wait();
 
-            Expander.DigitalWritePort(0);
+            Expander.DigitalPortLowLevel();
 
             Console.WriteLine("Port: {0}", Expander.DigitalReadPort());
 
             Console.WriteLine("Stop.");
+        }
+
+        private static void Expander_Error(object sender, ErrorEventArgs e)
+        {
+            if (e.HasValue)
+            {
+                Console.WriteLine(e.Error);
+            }
+            else
+            {
+                Console.WriteLine("Error is null.");
+            }
         }
     }
 }

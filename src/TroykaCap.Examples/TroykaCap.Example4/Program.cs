@@ -13,6 +13,10 @@ namespace TroykaCap.Example4
         static Program()
         {
             Pi.Init<BootstrapWiringPi>();
+
+            Expander = Pi.I2C.GetGpioExpander();
+
+            Expander.Error += Expander_Error;
         }
 
         public static void Main(string[] args)
@@ -27,8 +31,6 @@ namespace TroykaCap.Example4
             {
                 case "1":
                     {
-                        Expander = Pi.I2C.GetGpioExpander();
-
                         Console.WriteLine("Enter a new address:");
 
                         if (ushort.TryParse(ReadProgramMode(args, 1), out ushort address))
@@ -90,6 +92,18 @@ namespace TroykaCap.Example4
             }
 
             return string.Empty;
+        }
+
+        private static void Expander_Error(object sender, ErrorEventArgs e)
+        {
+            if (e.HasValue)
+            {
+                Console.WriteLine(e.Error);
+            }
+            else
+            {
+                Console.WriteLine("Error is null.");
+            }
         }
     }
 }

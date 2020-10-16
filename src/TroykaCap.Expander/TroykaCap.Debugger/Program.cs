@@ -4,6 +4,7 @@ using Unosquare.WiringPi;
 using Unosquare.RaspberryIO;
 using System.Threading.Tasks;
 using TroykaCap.Expander.Extensions;
+using Unosquare.RaspberryIO.Abstractions;
 using RemoteDebugger = System.Diagnostics.Debugger;
 
 namespace TroykaCap.Debugger
@@ -35,9 +36,14 @@ namespace TroykaCap.Debugger
                         Analog();
                         break;
                     }
-                case nameof(Digital):
+                case nameof(DigitalMode1):
                     {
-                        Digital();
+                        DigitalMode1();
+                        break;
+                    }
+                case nameof(DigitalMode2):
+                    {
+                        DigitalMode2();
                         break;
                     }
                 case nameof(Port):
@@ -47,7 +53,7 @@ namespace TroykaCap.Debugger
                     }
                 case nameof(Address):
                     {
-                        Address();
+                        Address(args);
                         break;
                     }
                 case nameof(Pwm):
@@ -77,7 +83,7 @@ namespace TroykaCap.Debugger
             }
         }
 
-        private static void Digital()
+        private static void DigitalMode1()
         {
             _expander.PinMode(0, PinMode.Input);
             _expander.PinMode(1, PinMode.Output);
@@ -89,6 +95,27 @@ namespace TroykaCap.Debugger
                 Console.WriteLine("Result: {0}", result);
 
                 _expander.DigitalWrite(1, result);
+            }
+        }
+
+        private static void DigitalMode2()
+        {
+            if (Pi.Gpio is GpioController gpio)
+            {
+                IGpioPin pinInput = gpio[WiringPiPin.Pin07];
+                IGpioPin pinOutput = gpio[WiringPiPin.Pin22];
+
+                pinInput.PinMode = GpioPinDriveMode.Input;
+                pinOutput.PinMode = GpioPinDriveMode.Output;
+
+                while (Exit())
+                {
+                    bool result = pinInput.TroykaButtonClick();
+
+                    Console.WriteLine("Result: {0}", result);
+
+                    pinOutput.Write(result);
+                }
             }
         }
 
@@ -105,19 +132,19 @@ namespace TroykaCap.Debugger
             Console.WriteLine("Port: {0}", _expander.DigitalReadPort());
         }
 
-        private static void Address()
+        private static void Address(string[] args)
         {
             Console.WriteLine("Enter 1 or 2 to select a mode:");
             Console.WriteLine("1. Change address.");
             Console.WriteLine("2. Reset address.");
 
-            switch (Console.ReadLine())
+            switch (ReadProgramMode(args, 1))
             {
                 case "1":
                     {
                         Console.WriteLine("Enter a new address:");
 
-                        if (ushort.TryParse(Console.ReadLine(), out ushort address))
+                        if (ushort.TryParse(ReadProgramMode(args, 2), out ushort address))
                         {
                             _expander.ChangeAddress(address);
 
@@ -138,7 +165,7 @@ namespace TroykaCap.Debugger
                     {
                         Console.WriteLine("Enter a current address:");
 
-                        if (ushort.TryParse(Console.ReadLine(), out ushort address))
+                        if (ushort.TryParse(ReadProgramMode(args, 2), out ushort address))
                         {
                             _expander = Pi.I2C.GetGpioExpander(address);
 
@@ -212,7 +239,14 @@ namespace TroykaCap.Debugger
 
         private static void Expander_Error(object sender, ErrorEventArgs e)
         {
-            Console.WriteLine(e.Error);
+            if (e.HasValue)
+            {
+                Console.WriteLine(e.Error);
+            }
+            else
+            {
+                Console.WriteLine("Error is null.");
+            }
         }
     }
 }
