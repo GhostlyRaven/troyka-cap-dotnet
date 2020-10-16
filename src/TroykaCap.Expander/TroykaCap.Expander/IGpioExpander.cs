@@ -70,6 +70,13 @@ namespace TroykaCap.Expander
         double AnalogRead(ushort pin);
 
         /// <summary>
+        /// Reads an analog signal.
+        /// </summary>
+        /// <param name="pin">Pin number.</param>
+        /// <returns>Analog signal value.</returns>
+        ushort AnalogRead16(ushort pin);
+
+        /// <summary>
         /// Sets the PWM frequency.
         /// </summary>
         /// <param name="freq">PWM frequency in Hz.</param>

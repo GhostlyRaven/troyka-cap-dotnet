@@ -21,16 +21,16 @@ namespace TroykaCap.Expander.Internal
 
         public ushort DigitalReadPort()
         {
-            ushort data = default;
+            ushort data;
 
             try
             {
-                data = _gpioExpander.ReadAddressWord(IOCommands.DigitalRead);
+                data = _gpioExpander.ReadAddressWord(Commands.DigitalRead);
             }
             catch (Exception error)
             {
                 OnError(error);
-                return data;
+                return default;
             }
 
             return ReverseUInt16(data);
@@ -48,8 +48,8 @@ namespace TroykaCap.Expander.Internal
 
             try
             {
-                _gpioExpander.WriteAddressWord(IOCommands.DigitalWriteHigh, highData);
-                _gpioExpander.WriteAddressWord(IOCommands.DigitalWriteLow, lowData);
+                _gpioExpander.WriteAddressWord(Commands.DigitalWriteHigh, highData);
+                _gpioExpander.WriteAddressWord(Commands.DigitalWriteLow, lowData);
             }
             catch (Exception error)
             {
@@ -62,26 +62,28 @@ namespace TroykaCap.Expander.Internal
             ushort data = GetMask(pin);
             data = ReverseUInt16(data);
 
-            switch (GetPortModeOrError(mode))
+            int command = mode switch
             {
-                case int command:
-                    {
-                        try
-                        {
-                            _gpioExpander.WriteAddressWord(command, data);
-                        }
-                        catch (Exception error)
-                        {
-                            OnError(error);
-                        }
+                Expander.PinMode.Input => Commands.PortModeInput,
+                Expander.PinMode.Output => Commands.PortModeOutput,
+                Expander.PinMode.InputPullUp => Commands.PortModePullUp,
+                Expander.PinMode.InputPullDown => Commands.PortModePullDown,
+                _ => Commands.Invalid
+            };
 
-                        break;
-                    }
-                case Exception error:
-                    {
-                        OnError(error);
-                        break;
-                    }
+            if (command == Commands.Invalid)
+            {
+                OnError(new ArgumentOutOfRangeException(nameof(mode), mode, Errors.PinMode));
+                return;
+            }
+
+            try
+            {
+                _gpioExpander.WriteAddressWord(command, data);
+            }
+            catch (Exception error)
+            {
+                OnError(error);
             }
         }
 
@@ -89,7 +91,8 @@ namespace TroykaCap.Expander.Internal
         {
             ushort data = GetMask(pin);
             data = ReverseUInt16(data);
-            int command = value ? IOCommands.DigitalWriteHigh : IOCommands.DigitalWriteLow;
+
+            int command = value ? Commands.DigitalWriteHigh : Commands.DigitalWriteLow;
 
             try
             {
@@ -112,7 +115,7 @@ namespace TroykaCap.Expander.Internal
 
             try
             {
-                _gpioExpander.WriteAddressWord(IOCommands.AnalogWrite, data);
+                _gpioExpander.WriteAddressWord(Commands.AnalogWrite, data);
             }
             catch (Exception error)
             {
@@ -125,13 +128,31 @@ namespace TroykaCap.Expander.Internal
             return AnalogRead16(pin) / AnalogReadDivisor;
         }
 
+        public ushort AnalogRead16(ushort pin)
+        {
+            ushort data;
+
+            try
+            {
+                _gpioExpander.WriteAddressWord(Commands.AnalogRead, pin);
+                data = _gpioExpander.ReadAddressWord(Commands.AnalogRead);
+            }
+            catch (Exception error)
+            {
+                OnError(error);
+                return default;
+            }
+
+            return ReverseUInt16(data);
+        }
+
         public void PwmFreq(ushort freq)
         {
             ushort reverseFreq = ReverseUInt16(freq);
 
             try
             {
-                _gpioExpander.WriteAddressWord(IOCommands.PwmFreq, reverseFreq);
+                _gpioExpander.WriteAddressWord(Commands.PwmFreq, reverseFreq);
             }
             catch (Exception error)
             {
@@ -147,7 +168,7 @@ namespace TroykaCap.Expander.Internal
         {
             try
             {
-                _gpioExpander.WriteAddressWord(IOCommands.ChangeI2CAddress, newAddress);
+                _gpioExpander.WriteAddressWord(Commands.ChangeI2CAddress, newAddress);
             }
             catch (Exception error)
             {
@@ -159,7 +180,7 @@ namespace TroykaCap.Expander.Internal
         {
             try
             {
-                _gpioExpander.Write(IOCommands.SaveI2CAddress);
+                _gpioExpander.Write(Commands.SaveI2CAddress);
             }
             catch (Exception error)
             {
@@ -171,7 +192,7 @@ namespace TroykaCap.Expander.Internal
         {
             try
             {
-                _gpioExpander.Write(IOCommands.Reset);
+                _gpioExpander.Write(Commands.ResetI2CAddress);
             }
             catch (Exception error)
             {
@@ -181,41 +202,7 @@ namespace TroykaCap.Expander.Internal
 
         #endregion
 
-        #region Unsafe private functions
-
-        private ushort AnalogRead16(ushort pin)
-        {
-            ushort data = default;
-
-            try
-            {
-                _gpioExpander.WriteAddressWord(IOCommands.AnalogRead, pin);
-                data = _gpioExpander.ReadAddressWord(IOCommands.AnalogRead);
-            }
-            catch (Exception error)
-            {
-                OnError(error);
-                return data;
-            }
-
-            return ReverseUInt16(data);
-        }
-
-        #endregion
-
-        #region Safe private functions
-
-        private object GetPortModeOrError(PinMode mode)
-        {
-            return mode switch
-            {
-                Expander.PinMode.Input => IOCommands.PortModeInput,
-                Expander.PinMode.Output => IOCommands.PortModeOutput,
-                Expander.PinMode.InputPullUp => IOCommands.PortModePullUp,
-                Expander.PinMode.InputPullDown => IOCommands.PortModePullDown,
-                _ => new ArgumentOutOfRangeException(nameof(mode), mode, Errors.PinMode)
-            };
-        }
+        #region Private functions
 
         private void OnError(ErrorEventArgs args)
         {
