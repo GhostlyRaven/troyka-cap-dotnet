@@ -19,7 +19,7 @@ namespace TroykaCap.Expander.Extensions
         {
             if (pin is null)
             {
-                throw new ArgumentNullException(nameof(pin), Errors.GpioPin);
+                throw ThrowHelper.ArgumentNullException(nameof(pin));
             }
 
             return !pin.Read();
@@ -36,7 +36,7 @@ namespace TroykaCap.Expander.Extensions
         {
             if (expander is null)
             {
-                throw new ArgumentNullException(nameof(expander), Errors.GpioExpander);
+                throw ThrowHelper.ArgumentNullException(nameof(expander));
             }
 
             return !expander.DigitalRead(pin);
@@ -51,7 +51,7 @@ namespace TroykaCap.Expander.Extensions
         {
             if (expander is null)
             {
-                throw new ArgumentNullException(nameof(expander), Errors.GpioExpander);
+                throw ThrowHelper.ArgumentNullException(nameof(expander));
             }
 
             expander.DigitalWritePort(255);
@@ -66,7 +66,7 @@ namespace TroykaCap.Expander.Extensions
         {
             if (expander is null)
             {
-                throw new ArgumentNullException(nameof(expander), Errors.GpioExpander);
+                throw ThrowHelper.ArgumentNullException(nameof(expander));
             }
 
             expander.DigitalWritePort(0);

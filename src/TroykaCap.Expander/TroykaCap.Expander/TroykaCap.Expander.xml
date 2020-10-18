@@ -9,11 +9,6 @@
             Contains the inner exception GPIO expander.
             </summary>
         </member>
-        <member name="P:TroykaCap.Expander.ErrorEventArgs.HasValue">
-            <summary>
-            Does the Error variable contain a value other than null.
-            </summary>
-        </member>
         <member name="P:TroykaCap.Expander.ErrorEventArgs.Error">
             <summary>
             Returns the inner exception GPIO expander.
@@ -129,6 +124,13 @@
             <param name="value">Analog signal value.</param>
         </member>
         <member name="M:TroykaCap.Expander.IGpioExpander.AnalogRead(System.UInt16)">
+            <summary>
+            Reads an analog signal.
+            </summary>
+            <param name="pin">Pin number.</param>
+            <returns>Analog signal value.</returns>
+        </member>
+        <member name="M:TroykaCap.Expander.IGpioExpander.AnalogRead16(System.UInt16)">
             <summary>
             Reads an analog signal.
             </summary>

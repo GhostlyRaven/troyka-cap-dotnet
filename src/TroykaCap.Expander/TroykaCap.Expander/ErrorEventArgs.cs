@@ -10,13 +10,7 @@ namespace TroykaCap.Expander
         private ErrorEventArgs(Exception error)
         {
             Error = error;
-            HasValue = error != null;
         }
-
-        /// <summary>
-        /// Does the Error variable contain a value other than null.
-        /// </summary>
-        public bool HasValue { get; }
 
         /// <summary>
         /// Returns the inner exception GPIO expander.

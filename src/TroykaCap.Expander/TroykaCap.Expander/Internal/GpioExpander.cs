@@ -5,17 +5,40 @@ namespace TroykaCap.Expander.Internal
 {
     internal sealed class GpioExpander : IGpioExpander
     {
-        private readonly II2CDevice _gpioExpander;
+        #region STM32 commands
 
+        private const int ResetI2CAddressCommand = 0x1;
+        private const int ChangeI2CAddressCommand = 0x2;
+        private const int SaveI2CAddressCommand = 0x3;
+        private const int PortModeInputCommand = 0x4;
+        private const int PortModePullUpCommand = 0x5;
+        private const int PortModePullDownCommand = 0x6;
+        private const int PortModeOutputCommand = 0x7;
+        private const int DigitalReadCommand = 0x8;
+        private const int DigitalWriteHighCommand = 0x9;
+        private const int DigitalWriteLowCommand = 0xA;
+        private const int AnalogWriteCommand = 0xB;
+        private const int AnalogReadCommand = 0xC;
+        private const int PwmFreqCommand = 0xD;
+
+        #endregion
+
+        #region Consts
+
+        private const int InvalidCommand = -1;
         private const int AnalogWriteMultiplier = 255;
         private const double AnalogReadDivisor = 4095.0;
 
-        public event EventHandler<ErrorEventArgs> Error;
+        #endregion
+
+        private readonly II2CDevice _gpioExpander;
 
         internal GpioExpander(II2CDevice gpioExpander)
         {
             _gpioExpander = gpioExpander;
         }
+
+        public event EventHandler<ErrorEventArgs> Error;
 
         #region Digital functions
 
@@ -25,7 +48,7 @@ namespace TroykaCap.Expander.Internal
 
             try
             {
-                data = _gpioExpander.ReadAddressWord(Commands.DigitalRead);
+                data = _gpioExpander.ReadAddressWord(DigitalReadCommand);
             }
             catch (Exception error)
             {
@@ -48,8 +71,8 @@ namespace TroykaCap.Expander.Internal
 
             try
             {
-                _gpioExpander.WriteAddressWord(Commands.DigitalWriteHigh, highData);
-                _gpioExpander.WriteAddressWord(Commands.DigitalWriteLow, lowData);
+                _gpioExpander.WriteAddressWord(DigitalWriteHighCommand, highData);
+                _gpioExpander.WriteAddressWord(DigitalWriteLowCommand, lowData);
             }
             catch (Exception error)
             {
@@ -64,16 +87,16 @@ namespace TroykaCap.Expander.Internal
 
             int command = mode switch
             {
-                Expander.PinMode.Input => Commands.PortModeInput,
-                Expander.PinMode.Output => Commands.PortModeOutput,
-                Expander.PinMode.InputPullUp => Commands.PortModePullUp,
-                Expander.PinMode.InputPullDown => Commands.PortModePullDown,
-                _ => Commands.Invalid
+                Expander.PinMode.Input => PortModeInputCommand,
+                Expander.PinMode.Output => PortModeOutputCommand,
+                Expander.PinMode.InputPullUp => PortModePullUpCommand,
+                Expander.PinMode.InputPullDown => PortModePullDownCommand,
+                _ => InvalidCommand
             };
 
-            if (command == Commands.Invalid)
+            if (command == InvalidCommand)
             {
-                OnError(new ArgumentOutOfRangeException(nameof(mode), mode, Errors.PinMode));
+                OnError(ThrowHelper.ArgumentOutOfRangeException(nameof(mode), mode));
                 return;
             }
 
@@ -92,7 +115,7 @@ namespace TroykaCap.Expander.Internal
             ushort data = GetMask(pin);
             data = ReverseUInt16(data);
 
-            int command = value ? Commands.DigitalWriteHigh : Commands.DigitalWriteLow;
+            int command = value ? DigitalWriteHighCommand : DigitalWriteLowCommand;
 
             try
             {
@@ -115,7 +138,7 @@ namespace TroykaCap.Expander.Internal
 
             try
             {
-                _gpioExpander.WriteAddressWord(Commands.AnalogWrite, data);
+                _gpioExpander.WriteAddressWord(AnalogWriteCommand, data);
             }
             catch (Exception error)
             {
@@ -134,8 +157,8 @@ namespace TroykaCap.Expander.Internal
 
             try
             {
-                _gpioExpander.WriteAddressWord(Commands.AnalogRead, pin);
-                data = _gpioExpander.ReadAddressWord(Commands.AnalogRead);
+                _gpioExpander.WriteAddressWord(AnalogReadCommand, pin);
+                data = _gpioExpander.ReadAddressWord(AnalogReadCommand);
             }
             catch (Exception error)
             {
@@ -152,7 +175,7 @@ namespace TroykaCap.Expander.Internal
 
             try
             {
-                _gpioExpander.WriteAddressWord(Commands.PwmFreq, reverseFreq);
+                _gpioExpander.WriteAddressWord(PwmFreqCommand, reverseFreq);
             }
             catch (Exception error)
             {
@@ -168,7 +191,7 @@ namespace TroykaCap.Expander.Internal
         {
             try
             {
-                _gpioExpander.WriteAddressWord(Commands.ChangeI2CAddress, newAddress);
+                _gpioExpander.WriteAddressWord(ChangeI2CAddressCommand, newAddress);
             }
             catch (Exception error)
             {
@@ -180,7 +203,7 @@ namespace TroykaCap.Expander.Internal
         {
             try
             {
-                _gpioExpander.Write(Commands.SaveI2CAddress);
+                _gpioExpander.Write(SaveI2CAddressCommand);
             }
             catch (Exception error)
             {
@@ -192,7 +215,7 @@ namespace TroykaCap.Expander.Internal
         {
             try
             {
-                _gpioExpander.Write(Commands.ResetI2CAddress);
+                _gpioExpander.Write(ResetI2CAddressCommand);
             }
             catch (Exception error)
             {

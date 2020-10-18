@@ -104,7 +104,7 @@ namespace TroykaCap.Example2
 
         private static void Expander_Error(object sender, ErrorEventArgs e)
         {
-            if (e.HasValue)
+            if (e.Error != null)
             {
                 Console.WriteLine(e.Error);
             }
